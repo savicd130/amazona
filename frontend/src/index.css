@@ -117,3 +117,7 @@ img.medium {
   color: #f0c040;
   margin: 0.1rem;
 }
+
+.raiting span:last-child {
+  color: #404040;
+}
