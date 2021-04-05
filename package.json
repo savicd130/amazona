@@ -10,7 +10,8 @@
   "author": "Dusan Savic <savicd130@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "update-notifier": "^5.1.0"
   },
   "devDependencies": {
     "eslint": "^7.23.0",
