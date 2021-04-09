@@ -11,11 +11,13 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "config": "^3.3.6",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
+    "react-paypal-button-v2": "^2.6.3",
     "update-notifier": "^5.1.0"
   },
   "devDependencies": {
