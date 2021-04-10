@@ -12,6 +12,9 @@ import {
   PRODUCTS_UPDATE_REQUEST,
   PRODUCTS_UPDATE_SUCCESS,
   PRODUCTS_UPDATE_FAIL,
+  PRODUCTS_DELETE_REQUEST,
+  PRODUCTS_DELETE_SUCCESS,
+  PRODUCTS_DELETE_FAIL,
 } from '../constants/productContasts';
 
 export const listProducts = () => async dispatch => {
@@ -86,5 +89,26 @@ export const updateProduct = product => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({ type: PRODUCTS_UPDATE_FAIL, payload: message });
+  }
+};
+
+export const deleteProduct = productId => async (dispatch, getState) => {
+  dispatch({ type: PRODUCTS_DELETE_REQUEST, payload: productId });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await Axios.delete(`/api/products/${productId}`, {
+      headers: {
+        Authorization: userInfo.token,
+      },
+    });
+    dispatch({ type: PRODUCTS_DELETE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: PRODUCTS_DELETE_FAIL, payload: message });
   }
 };

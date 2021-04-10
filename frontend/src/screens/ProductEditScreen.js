@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from '../../node_modules/axios/index';
 import { detailsProduct, updateProduct } from '../actions/productsActions';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
@@ -7,7 +8,7 @@ import { PRODUCTS_UPDATE_RESET } from '../constants/productContasts';
 
 export default function ProductEditScreen(props) {
   const productId = props.match.params.id;
-  const [name, setName] = useState();
+  const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
   const [category, setCategory] = useState('');
@@ -60,14 +61,41 @@ export default function ProductEditScreen(props) {
     );
   };
 
+  const [loadingUpload, setLoadingUpload] = useState(false);
+  const [errorUpload, setErrorUpload] = useState('');
+
+  const userSignin = useSelector(state => state.userSignin);
+  const { userInfo } = userSignin;
+
+  const uploadFileHandler = async e => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('image', file);
+    setLoadingUpload(true);
+
+    try {
+      const { data } = await axios.post('/api/uploads', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: userInfo.token,
+        },
+      });
+      setImage(data);
+      setLoadingUpload(false);
+    } catch (error) {
+      setErrorUpload(error.message);
+      setLoadingUpload(false);
+    }
+  };
+
   return (
     <div>
       <form onSubmit={submitHandler} className="form">
         <div>
           <h1>Edit Product {productId}</h1>
         </div>
-        {loadingUpdate && <LoadingBox />}
-        {errorUpdate && <MessageBox variant="danger">{errorUpdate}</MessageBox>}
+        {loadingUpload && <LoadingBox />}
+        {errorUpload && <MessageBox variant="danger">{errorUpload}</MessageBox>}
         {loading ? (
           <LoadingBox />
         ) : error ? (
@@ -103,6 +131,19 @@ export default function ProductEditScreen(props) {
                 value={image}
                 onChange={e => setImage(e.target.value)}
               />
+            </div>
+            <div>
+              <label htmlFor="imageFile">Image file</label>
+              <input
+                type="file"
+                id="imageFile"
+                label="Choose image"
+                onChange={uploadFileHandler}
+              />
+              {loadingUpdate && <LoadingBox />}
+              {errorUpdate && (
+                <MessageBox variant="danger">{errorUpdate}</MessageBox>
+              )}
             </div>
             <div>
               <label htmlFor="category">Category</label>
