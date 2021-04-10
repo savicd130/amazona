@@ -9,6 +9,9 @@ import {
   PRODUCTS_LIST_FAIL,
   PRODUCTS_LIST_REQUEST,
   PRODUCTS_LIST_SUCCESS,
+  PRODUCTS_UPDATE_REQUEST,
+  PRODUCTS_UPDATE_SUCCESS,
+  PRODUCTS_UPDATE_FAIL,
 } from '../constants/productContasts';
 
 export const listProducts = () => async dispatch => {
@@ -62,5 +65,26 @@ export const createProduct = () => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({ type: PRODUCTS_CREATE_FAIL, payload: message });
+  }
+};
+
+export const updateProduct = product => async (dispatch, getState) => {
+  dispatch({ type: PRODUCTS_UPDATE_REQUEST, payload: product });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await Axios.put(`/api/products/${product._id}`, product, {
+      headers: {
+        Authorization: userInfo.token,
+      },
+    });
+    dispatch({ type: PRODUCTS_UPDATE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: PRODUCTS_UPDATE_FAIL, payload: message });
   }
 };
