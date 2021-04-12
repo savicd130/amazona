@@ -292,3 +292,23 @@ img.large {
   border: 0.1rem solid #e4e4e4;
   padding: 0.5rem;
 }
+
+/* Carousel */
+.carousel .slide img {
+  max-width: 30rem;
+}
+
+.carousel .legend {
+  font-size: 3rem;
+}
+
+.caro-para {
+  font-size: 3rem;
+  text-transform: uppercase;
+  color: #2020a0;
+  transition: all 0.2s;
+}
+
+.caro-para:hover {
+  color: #f0c040;
+}

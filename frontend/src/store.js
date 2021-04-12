@@ -26,6 +26,7 @@ import {
   userListReducer,
   userRegisterReducer,
   userSigninReducer,
+  userTopSellersListReducer,
 } from './reducers/userReducers';
 
 const initalState = {
@@ -65,6 +66,7 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
   usersList: userListReducer,
   userDelete: deleteUserReducer,
+  userTopSellerList: userTopSellersListReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
