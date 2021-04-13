@@ -15,20 +15,42 @@ import {
   PRODUCTS_DELETE_REQUEST,
   PRODUCTS_DELETE_SUCCESS,
   PRODUCTS_DELETE_FAIL,
+  PRODUCTS_CATEGORY_LIST_REQUEST,
+  PRODUCTS_CATEGORY_LIST_SUCCESS,
+  PRODUCTS_CATEGORY_LIST_FAIL,
 } from '../constants/productContasts';
 
-export const listProducts = ({ seller = '', name = '' }) => async dispatch => {
+export const listProducts = ({
+  seller = '',
+  name = '',
+  category = '',
+  min = 0,
+  max = 0,
+  rating = 0,
+  order = '',
+}) => async dispatch => {
   dispatch({
     type: PRODUCTS_LIST_REQUEST,
   });
 
   try {
     const { data } = await Axios.get(
-      `/api/products?seller=${seller}&name=${name}`
+      `/api/products?seller=${seller}&name=${name}&category=${category}&min=${min}&max=${max}&rating=${rating}&order=${order}`
     );
+
     dispatch({ type: PRODUCTS_LIST_SUCCESS, payload: data });
   } catch (err) {
     dispatch({ type: PRODUCTS_LIST_FAIL, payload: err.message });
+  }
+};
+
+export const listProductsCategories = () => async dispatch => {
+  dispatch({ type: PRODUCTS_CATEGORY_LIST_REQUEST });
+  try {
+    const { data } = await Axios.get(`/api/products/categories`);
+    dispatch({ type: PRODUCTS_CATEGORY_LIST_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({ type: PRODUCTS_CATEGORY_LIST_FAIL, payload: err.message });
   }
 };
 

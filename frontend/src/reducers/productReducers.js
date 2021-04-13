@@ -17,6 +17,9 @@ import {
   PRODUCTS_DELETE_SUCCESS,
   PRODUCTS_DELETE_FAIL,
   PRODUCTS_DELETE_RESET,
+  PRODUCTS_CATEGORY_LIST_REQUEST,
+  PRODUCTS_CATEGORY_LIST_SUCCESS,
+  PRODUCTS_CATEGORY_LIST_FAIL,
 } from '../constants/productContasts';
 
 export const productListReducer = (
@@ -29,6 +32,22 @@ export const productListReducer = (
     case PRODUCTS_LIST_SUCCESS:
       return { loading: false, products: actions.payload };
     case PRODUCTS_LIST_FAIL:
+      return { loading: false, error: actions.payload };
+    default:
+      return state;
+  }
+};
+
+export const productCategoryListReducer = (
+  state = { loading: true, products: [] },
+  actions
+) => {
+  switch (actions.type) {
+    case PRODUCTS_CATEGORY_LIST_REQUEST:
+      return { loading: true };
+    case PRODUCTS_CATEGORY_LIST_SUCCESS:
+      return { loading: false, categories: actions.payload };
+    case PRODUCTS_CATEGORY_LIST_FAIL:
       return { loading: false, error: actions.payload };
     default:
       return state;

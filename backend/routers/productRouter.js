@@ -15,12 +15,49 @@ productRouter.get(
     const seller = req.query.seller || '';
     const sellerFilter = seller ? { seller } : {};
 
+    const category = req.query.category || '';
+    const categoryFilter = category ? { category } : {};
+    const min =
+      req.query.min && Number(req.query.min) !== 0 ? Number(req.query.min) : 0;
+    const max =
+      req.query.max && Number(req.query.max) !== 0 ? Number(req.query.max) : 0;
+    const priceFilter = min && max ? { price: { $gte: min, $lte: max } } : {};
+
+    const rating =
+      req.query.rating && Number(req.query.rating) !== 0
+        ? Number(req.query.rating)
+        : 0;
+    const ratingFilter = rating ? { price: { $gte: rating } } : {};
+
+    const order = req.query.order || '';
+    const orderFilter =
+      order === 'lowest'
+        ? { price: 1 }
+        : order === 'highest'
+        ? { price: -1 }
+        : order === 'toprated'
+        ? { rating: -1 }
+        : { _id: -1 };
+
     const products = await Product.find({
       ...sellerFilter,
       ...nameFilter,
-    }).populate('seller', 'seller.name seller.logo');
+      ...categoryFilter,
+      ...priceFilter,
+      ...ratingFilter,
+    })
+      .populate('seller', 'seller.name seller.logo')
+      .sort(orderFilter);
+
     res.send(products);
-    console.log(products);
+  })
+);
+
+productRouter.get(
+  '/categories',
+  expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct('category');
+    res.send(categories);
   })
 );
 
