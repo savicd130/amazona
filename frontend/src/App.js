@@ -23,6 +23,8 @@ import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import SellerRoute from './components/SellerRoute';
 import SellerScreen from './screens/SellerScreen';
+import SearchBox from './components/SearchBox';
+import SearchScreen from './screens/SearchScreen';
 
 function App(props) {
   const cart = useSelector(state => state.cart);
@@ -43,6 +45,9 @@ function App(props) {
             <Link className="brand" to="/">
               Amazona
             </Link>
+          </div>
+          <div>
+            <Route render={({ history }) => <SearchBox history={history} />} />
           </div>
           <div>
             <Link to="/cart">
@@ -123,6 +128,7 @@ function App(props) {
           <Route path="/payment" component={PaymentMethodScreen} />
           <Route path="/placeorder" component={PlaceOrderScreen} />
           <Route path="/order/:id" component={OrderScreen} />
+          <Route path="/search/name/:name?" component={SearchScreen} exact />
 
           <PrivateRoute path="/orderhistory" component={OrderHistoryScreen} />
           <PrivateRoute path="/profile" component={ProfileScreen} />

@@ -298,17 +298,19 @@ img.large {
   max-width: 30rem;
 }
 
-.carousel .legend {
-  font-size: 3rem;
+.carousel {
+  background-color: #203040;
 }
 
-.caro-para {
-  font-size: 3rem;
-  text-transform: uppercase;
-  color: #2020a0;
-  transition: all 0.2s;
+/* Search */
+.search button {
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-right: none;
+  margin-right: 0.5rem;
 }
 
-.caro-para:hover {
-  color: #f0c040;
+.search input {
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-right: none;
+  margin-left: 0.5rem;
 }

@@ -17,13 +17,15 @@ import {
   PRODUCTS_DELETE_FAIL,
 } from '../constants/productContasts';
 
-export const listProducts = ({ seller = '' }) => async dispatch => {
+export const listProducts = ({ seller = '', name = '' }) => async dispatch => {
   dispatch({
     type: PRODUCTS_LIST_REQUEST,
   });
 
   try {
-    const { data } = await Axios.get(`/api/products?seller=${seller}`);
+    const { data } = await Axios.get(
+      `/api/products?seller=${seller}&name=${name}`
+    );
     dispatch({ type: PRODUCTS_LIST_SUCCESS, payload: data });
   } catch (err) {
     dispatch({ type: PRODUCTS_LIST_FAIL, payload: err.message });
