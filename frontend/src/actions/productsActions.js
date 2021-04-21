@@ -18,6 +18,9 @@ import {
   PRODUCTS_CATEGORY_LIST_REQUEST,
   PRODUCTS_CATEGORY_LIST_SUCCESS,
   PRODUCTS_CATEGORY_LIST_FAIL,
+  PRODUCTS_REVIEW_CREATE_REQUEST,
+  PRODUCTS_REVIEW_CREATE_SUCCESS,
+  PRODUCTS_REVIEW_CREATE_FAIL,
 } from '../constants/productContasts';
 
 export const listProducts = ({
@@ -134,5 +137,33 @@ export const deleteProduct = productId => async (dispatch, getState) => {
         ? error.response.data.message
         : error.message;
     dispatch({ type: PRODUCTS_DELETE_FAIL, payload: message });
+  }
+};
+
+export const createReview = (productId, review) => async (
+  dispatch,
+  getState
+) => {
+  dispatch({ type: PRODUCTS_REVIEW_CREATE_REQUEST });
+  const {
+    userSignin: { userInfo },
+  } = getState();
+  try {
+    const { data } = await Axios.post(
+      `/api/products/${productId}/reviews`,
+      review,
+      {
+        headers: {
+          Authorization: userInfo.token,
+        },
+      }
+    );
+    dispatch({ type: PRODUCTS_REVIEW_CREATE_SUCCESS, payload: data.review });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: PRODUCTS_REVIEW_CREATE_FAIL, payload: message });
   }
 };
